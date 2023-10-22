@@ -41,6 +41,24 @@ getJasmineRequireObj().buildExpectationResult = function(j$) {
           result.matcherName = 'assert ' + options.error.operator;
         }
       }
+    } else {
+      let printValue = function(obj) {
+        switch (typeof obj) {
+          case 'object':
+            try{
+              return JSON.stringify(obj);
+            } catch( e){}
+          case 'string':
+          case 'date':
+          case 'number':
+          case 'boolean':
+          case 'array':
+          default:
+            return obj.toString()
+        }
+      }
+      result.expected = printValue(options.expected);
+      result.actual = printValue(options.actual);
     }
 
     return result;
